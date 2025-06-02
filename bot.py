@@ -1,4 +1,3 @@
-
 import os
 import telebot
 import pandas as pd
@@ -20,23 +19,22 @@ vpn_stock = load_stock()
 
 @bot.message_handler(commands=["start"])
 def start(msg):
-    text ="👋 স্বাগতম VPN দোকানে! নিচের অপশন থেকে একটি নির্বাচন করুন।"
-
+    text = (
+        "👋 স্বাগতম VPN দোকানে!\n"
+        "নিচ থেকে VPN বেছে নিন:\n\n"
+    )
     for vpn in set([v['VPN Name'] for v in vpn_stock]):
-        text += f"🔹 {vpn}
-"
-    text += "
-VPN নিতে চাইলে /buy লিখুন।"
+        text += f"🔹 {vpn}\n"
+    text += "\nVPN নিতে চাইলে /buy লিখুন।"
     bot.send_message(msg.chat.id, text)
 
 @bot.message_handler(commands=["buy"])
 def buy(msg):
-    text = "💳 VPN নিতে হলে টাকা পাঠান:
-
-"
-    text += "📱 Bkash/Nagad: 01747126892
-"
-    text += "💬 টাকা পাঠিয়ে 'আমি টাকা পাঠিয়েছি' লিখুন।"
+    text = (
+        "💳 VPN নিতে হলে টাকা পাঠান:\n\n"
+        "📱 Bkash/Nagad: 01747126892\n"
+        "💬 টাকা পাঠিয়ে 'আমি টাকা পাঠিয়েছি' লিখুন।"
+    )
     bot.send_message(msg.chat.id, text)
 
 @bot.message_handler(commands=["confirm"])
@@ -49,10 +47,8 @@ def confirm(msg):
         user_id = int(parts[1])
         if vpn_stock:
             acc = vpn_stock.pop(0)
-            bot.send_message(user_id, f"✅ আপনার VPN অ্যাকাউন্ট:
-📧 {acc['Email']}
-🔑 {acc['Password']}")
-            bot.send_message(msg.chat.id, "✅ ইউজারকে VPN পাঠানো হয়েছে।")
+            bot.send_message(user_id, f"✅ আপনার VPN অ্যাকাউন্ট:\n📧 {acc['Email']}\n🔑 {acc['Password']}")
+            bot.send_message(msg.chat.id, "✅ ইউজারকে VPN পাঠানো হয়েছে।")
         else:
             bot.send_message(msg.chat.id, "⚠️ আর কোন VPN stock নাই।")
     except:
